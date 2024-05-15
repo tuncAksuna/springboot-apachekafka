@@ -1,0 +1,46 @@
+server:
+  port: 8080
+
+logging:
+  pattern:
+    console: "%clr(%-5p) %clr(${PID}){cyan} %clr(--->){red} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(--->){red} %clr(%m){faint}%n"
+
+spring:
+  application:
+    name: springboot_kafka_app
+
+  datasource:
+    username: example
+    password: example
+    url: jdbc:postgresql://localhost:5432/springboot-kafka-app
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          show_sql: true
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  kafka:
+    host: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: ${spring.application.name}.consumer.0
+      auto-offset-reset: earliest
+#    producer:
+#      bootstrap-servers: localhost:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.JsonSerializer
+#      topics:
+#        kafka-user:
+#          topicName: ${spring.application.name}.topic.0
+#          partitionCount: 1
+#          replicationFactor: 1
+#          retentionInMs: 86400000 # 1 day
+
+
+
+
+
