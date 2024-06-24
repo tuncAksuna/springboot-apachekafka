@@ -12,7 +12,7 @@
     <artifactId>kafkaconsumer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>kafkaconsumer</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Spring Boot and Apache Kafka Consumer App</description>
     <url/>
     <licenses>
         <license/>
