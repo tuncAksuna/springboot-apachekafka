@@ -52,7 +52,7 @@ public class KafkaUserServiceImpl implements KafkaUserService {
         updatedKafkaUser.setEmail(kafkaUser.getEmail());
 
         Map<String, Object> headers = new HashMap<>();
-        headers.put(KEY, "kafka-updateuser-0");
+        headers.put(KEY, "kafka-updateuser");
         headers.put(TOPIC, new KafkaUserTopic().kafkaUserUpdateTopic().name());
         kafkaPublishMessageService.sendMessage(new GenericMessage<>(IKafkaUserMapper.KAFKA_USER_MAPPER.mapToDtO(updatedKafkaUser), headers));
     }
