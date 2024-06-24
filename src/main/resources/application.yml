@@ -23,8 +23,7 @@ spring:
           dialect: org.hibernate.dialect.PostgreSQLDialect
 
   kafka:
-    producer:
-      bootstrap-servers: localhost:29092
+    bootstrap-servers: localhost:29092
 
 
 
