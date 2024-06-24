@@ -1,6 +1,7 @@
 package com.tuncode.springbootkafkaapp.controller;
 
 import com.tuncode.springbootkafkaapp.configuration.dto.KafkaUserDto;
+import com.tuncode.springbootkafkaapp.configuration.dto.KafkaUserUpdatedDto;
 import com.tuncode.springbootkafkaapp.configuration.mapper.IKafkaUserMapper;
 import com.tuncode.springbootkafkaapp.configuration.response.AppResponse;
 import com.tuncode.springbootkafkaapp.entity.KafkaUser;
@@ -26,11 +27,12 @@ public class KafkaUserController {
     }
 
     @PutMapping("/update/{id}")
-    public AppResponse<KafkaUserDto> updateKafkaUser(@PathVariable("id") Long id,
-                                                     @RequestBody KafkaUserDto kafkaUserDto) {
+    public AppResponse<KafkaUserUpdatedDto> updateKafkaUser(@PathVariable("id") Long id,
+                                                            @RequestBody KafkaUserDto kafkaUserDto) {
         KafkaUser kafkaUser = IKafkaUserMapper.KAFKA_USER_MAPPER.mapToEntity(kafkaUserDto);
         kafkaUser.setId(id);
+        kafkaUser.setUpdated(true);
         kafkaUserService.updateKafkaUser(id, kafkaUser);
-        return new AppResponse<>(IKafkaUserMapper.KAFKA_USER_MAPPER.mapToDtO(kafkaUser));
+        return new AppResponse<>(IKafkaUserMapper.KAFKA_USER_MAPPER.mapToKafkaUserUpdateDto(kafkaUser));
     }
 }

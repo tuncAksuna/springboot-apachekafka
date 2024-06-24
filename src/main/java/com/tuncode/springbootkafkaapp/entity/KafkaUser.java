@@ -34,4 +34,6 @@ public class KafkaUser {
 
     @Column(name = "USERNAME")
     private String userName;
+
+    private boolean isUpdated;
 }
