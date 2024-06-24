@@ -14,7 +14,7 @@ public class KafkaUserTopic {
 
     @Bean
     public NewTopic kafkaUserCreateTopic() {
-        return TopicBuilder.name("kafkausercreatetopic")
+        return TopicBuilder.name("user-create")
                 .partitions(1)
                 .replicas(1)
                 .build();
@@ -22,7 +22,7 @@ public class KafkaUserTopic {
 
     @Bean
     public NewTopic kafkaUserUpdateTopic() {
-        return TopicBuilder.name("kafkauserupdatetopic")
+        return TopicBuilder.name("user-update")
                 .partitions(3)
                 .replicas(1)
                 .build();
