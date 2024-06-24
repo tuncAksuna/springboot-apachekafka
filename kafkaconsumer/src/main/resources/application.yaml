@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+logging:
+  pattern:
+    console: "%clr(%-5p) %clr(${PID}){cyan} %clr(--->){red} %clr([%8.15t]){cyan} %clr(%-40.40logger{0}){blue} %clr(--->){red} %clr(%m){faint}%n"
+
+spring:
+  application:
+    name: Spring Boot Consumer Application
+
+  datasource:
+    username: example
+    password: example
+    url: jdbc:postgresql://localhost:5432/springboot-kafka-app
+  jpa:
+    hibernate:
+      ddl-auto: update
+      properties:
+        hibernate:
+          show_sql: true
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+
