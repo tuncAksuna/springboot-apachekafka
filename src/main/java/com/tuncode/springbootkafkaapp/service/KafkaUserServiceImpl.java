@@ -1,8 +1,8 @@
 package com.tuncode.springbootkafkaapp.service;
 
 import com.tuncode.springbootkafkaapp.configuration.exceptions.SourceNotFoundException;
-import com.tuncode.springbootkafkaapp.configuration.kafka.producer.KafkaPublishMessageService;
-import com.tuncode.springbootkafkaapp.configuration.kafka.producer.topic.KafkaUserTopic;
+import com.tuncode.springbootkafkaapp.configuration.kafka.KafkaPublishMessageService;
+import com.tuncode.springbootkafkaapp.configuration.kafka.topic.KafkaUserTopic;
 import com.tuncode.springbootkafkaapp.configuration.mapper.IKafkaUserMapper;
 import com.tuncode.springbootkafkaapp.entity.KafkaUser;
 import com.tuncode.springbootkafkaapp.repository.KafkaUserJpaRepository;

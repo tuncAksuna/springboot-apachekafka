@@ -1,4 +1,4 @@
-package com.tuncode.springbootkafkaapp.configuration.kafka.producer.topic;
+package com.tuncode.springbootkafkaapp.configuration.kafka.topic;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;

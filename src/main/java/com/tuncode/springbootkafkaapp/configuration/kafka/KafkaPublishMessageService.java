@@ -1,4 +1,4 @@
-package com.tuncode.springbootkafkaapp.configuration.kafka.producer;
+package com.tuncode.springbootkafkaapp.configuration.kafka;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
