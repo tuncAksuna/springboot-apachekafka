@@ -25,6 +25,9 @@ public class KafkaConfiguration {
     @Value("${spring.kafka.bootstrap-servers}")
     private String kafkaAddress;
 
+    @Value("${spring.kafka.consumer.group-id}")
+    private String consumerGroupId;
+
     @Bean
     public KafkaTemplate<String, ?> tyKafkaTemplate() {
         return new KafkaTemplate<>(producerConfig());
@@ -43,7 +46,7 @@ public class KafkaConfiguration {
         Map<String, Object> props = new HashMap<>();
 
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "tuncode");
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "consumerGroupId");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
@@ -58,11 +61,5 @@ public class KafkaConfiguration {
                 payloadJsonDeserializer);
     }
 
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
-        return factory;
-    }
 }
 
