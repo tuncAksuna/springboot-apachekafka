@@ -15,8 +15,8 @@ public class KafkaUserTopic {
     @Bean
     public NewTopic kafkaUserCreateTopic() {
         return TopicBuilder.name("user-create")
-                .partitions(1)
-                .replicas(1)
+                .partitions(3)
+                .replicas(3)
                 .build();
     }
 
