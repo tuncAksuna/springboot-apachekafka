@@ -37,6 +37,7 @@ public class KafkaUserServiceImpl implements KafkaUserService {
             Map<String, Object> headers = new HashMap<>();
             headers.put(KEY, "kafka-createuser");
             headers.put(TOPIC, new KafkaUserTopic().kafkaUserCreateTopic().name());
+            headers.put(PARTITION, 1);
             kafkaPublishMessageService.sendMessage(new GenericMessage<>(IKafkaUserMapper.KAFKA_USER_MAPPER.mapToDtO(savedKafkaUser), headers));
         }
     }

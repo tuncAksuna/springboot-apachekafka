@@ -3,6 +3,7 @@ package com.tuncode.springbootkafkaapp.service;
 import com.tuncode.springbootkafkaapp.configuration.dto.KafkaUserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Service;
 public class KafkaConsumerService {
 
     @KafkaListener(topics = "user-create", groupId = "tuncode")
-    public void listenTopic(KafkaUserDto userDto) {
+    public void listenTopic(KafkaUserDto userDto, Acknowledgment ack) {
         log.info("Consumed: " + userDto);
+        ack.acknowledge();
     }
 }
