@@ -42,19 +42,4 @@ public class KafkaUserServiceImpl implements KafkaUserService {
         }
     }
 
-    @Override
-    @Transactional(propagation = Propagation.SUPPORTS)
-    public void updateKafkaUser(Long id, KafkaUser kafkaUser) {
-        KafkaUser updatedKafkaUser = kafkaUserJpaRepository.findById(id)
-                .orElseThrow(() -> new SourceNotFoundException("Source not found in the system with firstname and lastname !" + kafkaUser.getUserName() + " " + kafkaUser.getLastName()));
-
-        updatedKafkaUser.setFirstName(kafkaUser.getFirstName());
-        updatedKafkaUser.setLastName(kafkaUser.getLastName());
-        updatedKafkaUser.setEmail(kafkaUser.getEmail());
-
-        Map<String, Object> headers = new HashMap<>();
-        headers.put(KEY, "kafka-updateuser");
-        headers.put(TOPIC, new KafkaUserTopic().kafkaUserUpdateTopic().name());
-        kafkaPublishMessageService.sendMessage(new GenericMessage<>(IKafkaUserMapper.KAFKA_USER_MAPPER.mapToDtO(updatedKafkaUser), headers));
-    }
 }

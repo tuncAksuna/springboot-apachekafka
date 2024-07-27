@@ -8,6 +8,4 @@ import com.tuncode.springbootkafkaapp.entity.KafkaUser;
 public interface KafkaUserService {
 
     void createKafkaUser(KafkaUser kafkaUser);
-
-    void updateKafkaUser(Long id, KafkaUser kafkaUser);
 }

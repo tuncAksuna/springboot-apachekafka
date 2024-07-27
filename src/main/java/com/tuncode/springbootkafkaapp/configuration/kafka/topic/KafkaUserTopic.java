@@ -12,6 +12,10 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 public class KafkaUserTopic {
 
+    /**
+     * Since this topic has 3 fields, 3 separate consumer-groups should be created and read. Otherwise lag error may occur
+     * "Consumer Group Pub/Sub Model"
+     */
     @Bean
     public NewTopic kafkaUserCreateTopic() {
         return TopicBuilder.name("user-create")
@@ -21,15 +25,4 @@ public class KafkaUserTopic {
     }
 
 
-    /**
-     * Since this topic has 3 fields, 3 separate consumer-groups should be created and read. Otherwise lag error may occur
-     * "Consumer Group Pub/Sub Model"
-     */
-    @Bean
-    public NewTopic kafkaUserUpdateTopic() {
-        return TopicBuilder.name("user-update")
-                .partitions(3)
-                .replicas(1)
-                .build();
-    }
 }
