@@ -1,5 +1,6 @@
 package com.tuncode.springbootkafkaapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -35,5 +36,10 @@ public class KafkaUser {
     @Column(name = "USERNAME")
     private String userName;
 
+    @JsonIgnore
     private boolean isUpdated;
+
+    @JsonIgnore
+    private String topicName;
+
 }

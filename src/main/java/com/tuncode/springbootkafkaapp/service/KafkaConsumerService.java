@@ -2,6 +2,9 @@ package com.tuncode.springbootkafkaapp.service;
 
 import com.tuncode.springbootkafkaapp.configuration.dto.KafkaUserDto;
 import com.tuncode.springbootkafkaapp.configuration.exceptions.SourceNotFoundException;
+import com.tuncode.springbootkafkaapp.configuration.mapper.IKafkaUserMapper;
+import com.tuncode.springbootkafkaapp.entity.KafkaUser;
+import com.tuncode.springbootkafkaapp.repository.KafkaUserJpaRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.DltHandler;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -20,6 +23,12 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class KafkaConsumerService {
+
+    private final KafkaUserJpaRepository kafkaUserJpaRepository;
+
+    public KafkaConsumerService(KafkaUserJpaRepository kafkaUserJpaRepository) {
+        this.kafkaUserJpaRepository = kafkaUserJpaRepository;
+    }
 
     /**
      * It tries to consume the message 5 times at intervals of 2 times 3 seconds.
@@ -45,7 +54,10 @@ public class KafkaConsumerService {
 
     @DltHandler
     public void handleDltQueueMessages(KafkaUserDto data, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
-        log.error("Event from topic: " + topic + " : " + data);
+        KafkaUser kafkaUser = IKafkaUserMapper.KAFKA_USER_MAPPER.mapToEntity(data);
+        kafkaUser.setTopicName(topic);
+        kafkaUserJpaRepository.save(kafkaUser);
+        log.error("Data not consumed and saved to the database ! : {} {}", data, topic);
     }
 
 }
