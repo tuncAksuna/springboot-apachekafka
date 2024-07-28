@@ -39,7 +39,4 @@ public class KafkaUser {
     @JsonIgnore
     private boolean isUpdated;
 
-    @JsonIgnore
-    private String topicName;
-
 }
