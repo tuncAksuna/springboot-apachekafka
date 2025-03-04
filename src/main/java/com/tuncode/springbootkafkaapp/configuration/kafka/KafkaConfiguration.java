@@ -34,9 +34,9 @@ public class KafkaConfiguration {
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddresses);
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        config.put(ProducerConfig.ACKS_CONFIG, "1");
-        config.put(ProducerConfig.RETRIES_CONFIG, 10);
-
+        config.put(ProducerConfig.ACKS_CONFIG, "all");
+        config.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true); // Idempotent Producer
+        config.put(ProducerConfig.RETRIES_CONFIG, Integer.MAX_VALUE);
         return new DefaultKafkaProducerFactory<>(config);
     }
 
@@ -55,6 +55,7 @@ public class KafkaConfiguration {
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
         props.put(ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG, 5000);
         props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, 15000);
+        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 10);
 
         JsonDeserializer<Object> payloadJsonDeserializer = new JsonDeserializer<>(Object.class);
         payloadJsonDeserializer.addTrustedPackages("com.ornek.model");
