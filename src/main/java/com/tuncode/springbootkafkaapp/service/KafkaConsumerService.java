@@ -32,22 +32,17 @@ public class KafkaConsumerService {
 
     private final DLTErrorMessagesRepository dltErrorMessagesRepository;
 
-    /**
-     * It tries to consume the message 5 times at intervals of 2 times 3 seconds.
-     * It only does this when it receives a SourceNotFoundException. If it cannot consume the message, the message is sent to the DeadLetterQueue topic.
-     */
     @RetryableTopic(
             attempts = "5",
-            include = {SourceNotFoundException.class}, // exception will be thrown only for this exception
+            include = {SourceNotFoundException.class},
             topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
             dltTopicSuffix = "-custom-deadletter",
             retryTopicSuffix = "-custom-retrytopic",
-            backoff = @Backoff(delay = 3000, multiplier = 2)
+            backoff = @Backoff(delay = 5000, multiplier = 1) // Duration 5000 MS 
     )
     @KafkaListener(topics = "user-create", groupId = "tuncode")
-    @Transactional("transactionManager")
     public void listenTopic(KafkaUserDto userDto, Acknowledgment ack) {
-        if ("".equals(userDto.getEmail())) {
+        if (userDto.getEmail() == null || userDto.getEmail().isBlank()) {
             log.error("Message not consumed !");
             throw new SourceNotFoundException("Source Not Found !");
         }
@@ -56,16 +51,25 @@ public class KafkaConsumerService {
     }
 
     @DltHandler
-    public void handleDltQueueMessages(KafkaUserDto data,
-                                       @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
+    public void handleDltQueueMessages(KafkaUserDto data, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) {
         DLTErrorMessages dltErrorMessages = IKafkaUserMapper.KAFKA_USER_MAPPER.mapToDLTErrorMessage(data);
-        dltErrorMessages.setMessage("Message not consumed ! Data that not consumed: "
-                + "'" + data.getFirstName() + " " + data.getLastName() + " " + data.getEmail() + "'" + " and the message produced to " + topic);
+        if (dltErrorMessages == null) {
+            log.error("Mapping failed for data: {}", data);
+            return;
+        }
+
+        dltErrorMessages.setMessage(String.format(
+                "Message not consumed! Data: '%s %s %s' sent to %s",
+                data.getFirstName(), data.getLastName(), data.getEmail(), topic
+        ));
         dltErrorMessages.setMessageConsumed(false);
         dltErrorMessages.setCreationTime(LocalDateTime.now());
 
-        dltErrorMessagesRepository.save(dltErrorMessages);
-        log.error("Data not consumed and saved to the database ! : {} {}", data, topic);
+        try {
+            dltErrorMessagesRepository.save(dltErrorMessages);
+            log.info("Data saved to database: {}", data);
+        } catch (Exception e) {
+            log.error("Error saving DLT message to database: {}", e.getMessage());
+        }
     }
-
 }
